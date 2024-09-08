@@ -59,3 +59,17 @@ def count_elements_in_segment(arr, a, b)
   end
   return count
 end
+
+# Для двух введенных списков L1 и L2 построить новый список, состоящий из элементов, встречающихся только в одном из этих списков и не повторяющихся в них.
+
+def unique_elements(l1, l2)
+  result = []
+  l1.each_index do |i|
+    result.push(l1[i]) if not l2.include?(l1[i])
+  end
+  l2.each_index do |i|
+    result.push(l2[i]) if not l1.include?(l2[i])
+  end
+  return result
+end
+

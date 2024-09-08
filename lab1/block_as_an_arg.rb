@@ -49,3 +49,13 @@ def count_elements_between_min(arr)
   end
   return last_min_index - first_min_index
 end
+
+# Дан целочисленный массив и отрезок a..b. Необходимо найти количество элементов, значение которых принадлежит этому отрезку.
+
+def count_elements_in_segment(arr, a, b)
+  count = 0
+  arr.each_index do |i|
+    count += 1 if arr[i] >= a and arr[i] <= b
+  end
+  return count
+end

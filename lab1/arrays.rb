@@ -13,7 +13,7 @@ def find_first_positive(arr)
   for i in 0...arr.length
     return i if arr[i] > 0
   end
-  return nil
+  return -1
 end
 
 def read_array_from_file(file_name)
@@ -31,29 +31,20 @@ end
 # Написать программу, которая принимает как аргумент два значения. Первое значение говорит, какой из методов задачи 1 выполнить, второй говорит о том, откуда читать список аргументом должен быть написан адрес файла. Далее необходимо прочитать массив и выполнить метод.
 
 def main()
-  print("Какой из методов выполнить?\n1. Найти минимальный элемент\n2. Найти первый положительный элемент\n")
-  option = gets.chomp
-
-  while 
-    case option
+  option = ARGV[0]
+  file_name = ARGV[1].chomp
+  case option
     when "1"
-      print("Введите название файла: ")
-      file_name = gets.chomp
       arr = read_array_from_file(file_name)
       print("Минимальный элемент = ", find_min(arr), "\n")
       return
     when "2"
-      print("Введите название файла: ")
-      file_name = gets.chomp
       arr = read_array_from_file(file_name)
       print("Индекс первого положительного элемента = ", find_first_positive(arr), "\n")
       return
-    when "exit"
-      return
     else
-      print("Выберете одну из функций\n")
-      continue
-    end
+      print("Неверный ввод\n")
+      return
   end
 end
 

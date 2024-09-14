@@ -9,13 +9,13 @@ end
 
 def coprime_count(n)
   count = 0
-  for i in 1..n
+  for i in 2..n
     count += 1 if gcd(i, n) == 1
   end
   return count
 end
 
-print coprime_count(10), "\n"
+print(coprime_count(10), "\n")
 
 # Метод 2. Найти сумму цифр числа, делящихся на 3.
 def sum_of_digits_divisible_by_3(n)
@@ -28,40 +28,41 @@ def sum_of_digits_divisible_by_3(n)
   return sum
 end
 
-# Метод 3. Найти делитель числа, являющийся взаимно простым с наибольшим количеством цифр данного числа.
-def max_coprime_divisor(n)
-  divisor = 1
-  max_coprime_count = 0
+print(sum_of_digits_divisible_by_3(123456789), "\n")
 
-  num_length = 0
-  temp = n
-  while temp > 0
-    num_length += 1
-    temp /= 10
+def digits(num)
+  digits = []
+  while num!= 0
+    digits.push num % 10
+    num /= 10
   end
-
-  for i in 2..n
-    coprime_count = 0
-    temp = n
-
-    while temp > 0
-      digit = temp % 10
-      if gcd(digit, i) == 1
-        coprime_count += 1 
-      end
-      temp /= 10
-    end
-        
-    if coprime_count > max_coprime_count
-      max_coprime_count = coprime_count
-      divisor = i
-      
-      if max_coprime_count == num_length
-        return divisor
-      end
-    end
-  end
-  return divisor
+  digits
 end
 
-print max_coprime_divisor(1347), "\n"
+def have_divider(num, begin_of_range)
+  while begin_of_range != 0
+    num, begin_of_range = begin_of_range, num % begin_of_range
+  end
+  num
+end
+
+# Метод 3. Найти делитель числа, являющийся взаимно простым с наибольшим количеством цифр данного числа.
+def max_coprime_divisor(num)
+  max_count = 0
+  result = 0
+  (1..num).each do |i|
+    if num % i == 0
+      count = 0
+      digits(num).each do |j|
+        count += 1 if have_divider(i, j) == 1
+      end
+      if count >= max_count
+        max_count = count
+        result = i
+      end
+    end
+  end
+  result
+end
+
+print(max_coprime_divisor(1347), "\n")

@@ -13,11 +13,11 @@ printf("Какой твой любимый язык?\n")
 language = gets.chomp
 case language
 when "ruby"
-  printf("А ты подлиза, %s)\n", name)
+  printf("А ты подлиза, #{name})\n")
 when "python"
   print("Фи, зачем ты на нем пишешь?\n")
 when "go"
-  print("Вот это уважаемо. Go - самые православный ЯП.\n")
+  print("Вот это уважаемо. Go - самый православный ЯП.\n")
 else
   printf("О, да ты фанат %s. Ты полюбишь Ruby совсем скоро, обещаю.\n", language, name)
 end

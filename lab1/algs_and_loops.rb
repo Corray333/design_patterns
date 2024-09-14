@@ -30,6 +30,9 @@ end
 
 print(sum_of_digits_divisible_by_3(123456789), "\n")
 
+
+
+# Метод 3. Найти делитель числа, являющийся взаимно простым с наибольшим количеством цифр данного числа.
 def digits(num)
   digits = []
   while num!= 0
@@ -46,7 +49,6 @@ def have_divider(num, begin_of_range)
   num
 end
 
-# Метод 3. Найти делитель числа, являющийся взаимно простым с наибольшим количеством цифр данного числа.
 def max_coprime_divisor(num)
   max_count = 0
   result = 0

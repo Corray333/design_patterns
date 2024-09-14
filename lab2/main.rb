@@ -20,8 +20,9 @@ students << Student.new({
 
 students.each() do |student|
   puts(student, "\n")
+  puts(student.valid?(), "\n")
 end
 
-students.each() do |student|
-  print(student.inspect(), "\n")
-end
+# students.each() do |student|
+#   print(student.inspect(), "\n")
+# end

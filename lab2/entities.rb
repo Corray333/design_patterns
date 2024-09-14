@@ -74,8 +74,29 @@ class Student
   end
 
   def self.is_phone_number?(phone_number)
-    return phone_number.match(/^\d{11}$/)
+    return false if phone_number == nil
+    return phone_number.match?(/^\d{11}$/)
   end
 
+  def self.is_email?(email)
+    return false if email == nil
+    return email.match?(/^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/)
+  end
+
+  def self.is_tg_username?(tg_username)
+    return false if tg_username == nil
+    return tg_username.match?(/^@[a-zA-Z0-9_]{5,32}$/)
+  end
+
+  def self.is_git?(git)
+    return false if git == nil
+    return git.match?(/^(https:\/\/)?(www\.)?github.com\/[a-zA-Z0-9_-]+$/)
+  end
+
+  def valid?()
+    return Student.is_git?(@git) && (Student.is_email?(@email) || Student.is_phone_number?(@phone) || Student.is_tg_username?(@tg_username))
+  end
+
+  
 end
 

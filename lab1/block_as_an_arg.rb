@@ -73,3 +73,32 @@ def unique_elements(l1, l2)
   return result
 end
 
+
+def main()
+  print("Какой из методов выполнить?\n1. Найти индекс минимального элемента\n2. Найти количество элементо в интервале (a,b)\n3. Найти количество элементов между первым и последним минимальным\n4. Найти количество элементов в отрезке [a,b]\n5. Построить новый список из уникальных элементов\n")
+  option = gets.chomp
+
+  while 
+    case option
+    when "1"
+      print("Введите название файла: ")
+      file_name = gets.chomp
+      arr = read_array_from_file(file_name)
+      print("Минимальный элемент = ", find_min(arr), "\n")
+      return
+    when "2"
+      print("Введите название файла: ")
+      file_name = gets.chomp
+      arr = read_array_from_file(file_name)
+      print("Индекс первого положительного элемента = ", find_first_positive(arr), "\n")
+      return
+    when "exit"
+      return
+    else
+      print("Выберете одну из функций\n")
+      continue
+    end
+  end
+end
+
+main()

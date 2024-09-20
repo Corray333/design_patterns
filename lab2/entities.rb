@@ -1,19 +1,21 @@
 require "json"
 
 class Student
-  attr_accessor :surname, :name, :patronymic, :tg_username, :email, :git
-  attr_reader :phone
+  attr_accessor :surname, :name, :patronymic, :git
   attr_reader :id
 
-  @@current_id = 0
-  def initialize(params = {})
-    raise ArgumentError, "Attribute id can't be defined" if params.key?(:id)
+  def initialize(params)
+    raise ArgumentError, "Missing :id" unless params.key?(:id)
     raise ArgumentError, "Missing :surname" unless params.key?(:surname)
     raise ArgumentError, "Missing :name" unless params.key?(:name)
     raise ArgumentError, "Missing :patronymic" unless params.key?(:patronymic)
 
-    @@current_id += 1
-    @id = @@current_id
+    raise ArgumentError, "Invalid phone number" if params.key?(:phone) && !Student.is_phone_number?(params[:phone])
+    raise ArgumentError, "Invalid tg_username" if params.key?(:tg_username) && !Student.is_tg_username?(params[:tg_username])
+    raise ArgumentError, "Invalid email" if params.key?(:email) && !Student.is_email?(params[:email])
+    raise ArgumentError, "Invalid git" if params.key?(:git) && !Student.is_git?(params[:git])
+
+    @id = params[:id]
     @surname = params[:surname]
     @name = params[:name]
     @patronymic = params[:patronymic]
@@ -29,11 +31,17 @@ class Student
   end
 
   def to_s()
-    str = "Student: id = #{@id}, surname = #{@surname}, name = #{@name}, patronymic = #{@patronymic}"
-    str += ", phone = #{@phone}" if @phone
-    str += ", tg_username = #{@tg_username}" if @tg_username
-    str += ", email = #{@email}" if @email
+    str = "id = #{@id}, fio = #{@surname} #{@name[0]}. #{@patronymic[0]}"
     str += ", git = #{@git}" if @git
+    contact = ""
+    if @phone
+      contact = @phone
+    elsif @tg_username
+      contact = @tg_username
+    elsif @email
+      contact = @email
+    end
+    str += ", contact = #{contact}"
     return str
   end
 
@@ -97,6 +105,60 @@ class Student
     return Student.is_git?(@git) && (Student.is_email?(@email) || Student.is_phone_number?(@phone) || Student.is_tg_username?(@tg_username))
   end
 
-  
+  def set_contacts(params = {})
+    @phone = params[:phone] if params.key?(:phone) && Student.is_phone_number?(params[:phone])
+    @tg_username = params[:tg_username] if params.key?(:tg_username) && Student.is_tg_username?(params[:tg_username])
+    @email = params[:email] if params.key?(:email) && Student.is_email?(params[:email])
+  end
+
+  def get_info()
+    return self.to_s()
+  end
 end
 
+
+# 4.	Напишите класс Student_short, имеющий 4 поля ID, ФамилияИнициалы, гит, контакт. Поля нельзя редактировать. Возможно два конструктора – в одном – объект класса Student, в другом ID и строка, содержащая всю остальную информацию – совпадает с заданием 3.
+
+class StudentShort
+  attr_reader :id, :fio, :git, :contact
+
+  def initialize(params = {})
+    raise ArgumentError, "Missing :id" unless params.key?(:id)
+    raise ArgumentError, "Missing :fio" unless params.key?(:fio)
+    raise ArgumentError, "Missing :git" unless params.key?(:git)
+    raise ArgumentError, "Missing :contact" unless params.key?(:contact)
+
+    raise ArgumentError, "Invalid git" unless Student.is_git?(params[:git])
+
+    @id = params[:id]
+    @fio = params[:fio]
+    @git = params[:git]
+    @contact = params[:contact]
+  end
+
+  def self.from_string(id, data)
+    @id = id
+
+    data.split(",").map do |field|
+
+      pair = field.split("=")
+      
+      if pair.length != 2
+        raise ArgumentError, "Invalid data format"
+      end
+
+      case pair[0].strip
+      when "fio"
+        @fio = pair[1].strip
+      when "git"
+        @git = pair[1].strip
+      when "contact"
+        @contact = pair[1].strip
+      else
+        p("Invalid field: |#{pair[0].strip}|")
+        raise ArgumentError, "Invalid data format"
+      end
+      
+    end
+  end
+end

@@ -2,7 +2,7 @@ require "json"
 
 class Student
   attr_accessor :surname, :name, :patronymic, :git
-  attr_reader :id
+  attr_reader :id, :phone, :tg_username, :email
 
   def initialize(params)
     raise ArgumentError, "Missing :id" unless params.key?(:id)
@@ -25,13 +25,42 @@ class Student
     @git = params[:git]
   end
 
+  def self.read_from_txt(file_path)
+    raise ArgumentError, "Invalid file path" unless File.file?(file_path)
+    students = []
+    File.open(file_path, "r") do |file|
+      file.each_line do |line|
+        json_data = JSON.parse(line)
+
+        # string keys to symbol keys
+        symbolized_data = json_data.transform_keys(&:to_sym)
+        students << Student.new(symbolized_data)
+      end
+    end
+    return students
+  end
+
+  def self.write_to_txt(file_path, students)
+    File.open(file_path, "w") do |file|
+      students.each do |student|
+        file.puts(student.to_json)
+      end
+    end
+  end
+
+  def write_to_txt(file_path)
+    File.open(file_path, "w") do |file|
+      file.puts(self.to_json)
+    end
+  end
+
   def phone=(phone)
     raise ArgumentError, "Invalid phone number" unless Student.is_phone_number?(phone)
     @phone = phone
   end
 
   def to_s()
-    str = "id = #{@id}, fio = #{@surname} #{@name[0]}. #{@patronymic[0]}"
+    str = "fio = #{@surname} #{@name[0]}. #{@patronymic[0]}"
     str += ", git = #{@git}" if @git
     contact = ""
     if @phone
@@ -70,11 +99,11 @@ class Student
   end
 
   def to_json()
-    JSON.pretty_generate(to_hash)
+    JSON.generate(to_hash)
   end
 
   def inspect()
-    to_json()
+    JSON.pretty_generate(to_hash)
   end
 
   def self.from_json(json)
@@ -117,8 +146,6 @@ class Student
 end
 
 
-# 4.	Напишите класс Student_short, имеющий 4 поля ID, ФамилияИнициалы, гит, контакт. Поля нельзя редактировать. Возможно два конструктора – в одном – объект класса Student, в другом ID и строка, содержащая всю остальную информацию – совпадает с заданием 3.
-
 class StudentShort
   attr_reader :id, :fio, :git, :contact
 
@@ -137,7 +164,9 @@ class StudentShort
   end
 
   def self.from_string(id, data)
-    @id = id
+    fio = ""
+    git = ""
+    contact = ""
 
     data.split(",").map do |field|
 
@@ -149,16 +178,15 @@ class StudentShort
 
       case pair[0].strip
       when "fio"
-        @fio = pair[1].strip
+        fio = pair[1].strip
       when "git"
-        @git = pair[1].strip
+        git = pair[1].strip
       when "contact"
-        @contact = pair[1].strip
+        contact = pair[1].strip
       else
-        p("Invalid field: |#{pair[0].strip}|")
         raise ArgumentError, "Invalid data format"
       end
-      
     end
+    return StudentShort.new(id: id, fio: fio, git: git, contact: contact)
   end
 end

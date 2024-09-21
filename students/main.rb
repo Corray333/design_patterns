@@ -3,7 +3,7 @@ require "./entities"
 students = []
 
 students << Student.new(
-  id:1,
+  :id => 1,
   surname: "Anikin",
   name: "Mark",
   patronymic: "Andreevich",
@@ -22,3 +22,8 @@ students[0].set_contacts({
   tg_username: "@corray9",
   email: "mark.corray.off@gmail.com"
 })
+
+students.each do |student|
+  p(student)
+end
+

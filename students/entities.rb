@@ -10,10 +10,10 @@ class Student
     raise ArgumentError, "Missing :name" unless params.key?(:name)
     raise ArgumentError, "Missing :patronymic" unless params.key?(:patronymic)
 
-    raise ArgumentError, "Invalid phone number" if params.key?(:phone) && !Student.is_phone_number?(params[:phone])
-    raise ArgumentError, "Invalid tg_username" if params.key?(:tg_username) && !Student.is_tg_username?(params[:tg_username])
-    raise ArgumentError, "Invalid email" if params.key?(:email) && !Student.is_email?(params[:email])
-    raise ArgumentError, "Invalid git" if params.key?(:git) && !Student.is_git?(params[:git])
+    raise ArgumentError, "Invalid or missing phone number" if params.key?(:phone) && !Student.is_phone_number?(params[:phone])
+    raise ArgumentError, "Invalid or missing tg_username" if params.key?(:tg_username) && !Student.is_tg_username?(params[:tg_username])
+    raise ArgumentError, "Invalid or missing email" if params.key?(:email) && !Student.is_email?(params[:email])
+    raise ArgumentError, "Invalid or missing git" if params.key?(:git) && !Student.is_git?(params[:git])
 
     @id = params[:id]
     @surname = params[:surname]
@@ -32,7 +32,7 @@ class Student
       file.each_line do |line|
         json_data = JSON.parse(line)
 
-        # string keys to symbol keys
+        # string keys to symbols
         symbolized_data = json_data.transform_keys(&:to_sym)
         students << Student.new(symbolized_data)
       end

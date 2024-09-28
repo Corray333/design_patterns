@@ -13,20 +13,20 @@ def test_write_and_read()
   students = []
 
   students << Student.new(
-    id:1,
-    surname: "Anikin",
-    name: "Mark",
-    patronymic: "Andreevich",
+    1,
+    "Anikin",
+    "Mark",
+    "Andreevich",
     phone: "89320509129",
     git: "github.com/Corray333"
   )
-  students << Student.new({
-    id:2,
-    surname: "Masenko",
-    name: "Maria",
-    patronymic: "Sergeevna",
+  students << Student.new(
+    2,
+    "Masenko",
+    "Maria",
+    "Sergeevna",
     phone: "89234567890",
-  })
+  )
 
   Student.write_to_txt("students.txt", students)
 
@@ -43,10 +43,10 @@ tests << Test.new("write_and_read", method(:test_write_and_read))
 
 def test_student_and_short_student_compability()
   student = Student.new(
-    id:1,
-    surname: "Anikin",
-    name: "Mark",
-    patronymic: "Andreevich",
+    1,
+    "Anikin",
+    "Mark",
+    "Andreevich",
     phone: "89320509129",
     git: "github.com/Corray333"
   )

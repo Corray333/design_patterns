@@ -4,7 +4,7 @@ require "json"
 class StudentBase
 
   def initialize(id, git: nil)
-    raise ArgumentError, "Invalid or missing git" if git && !Student.is_git?(git)
+    raise ArgumentError, "Invalid or missing git" if git && !StudentBase.is_git?(git)
 
     @id = id
     @git = git
@@ -26,7 +26,7 @@ class StudentBase
     raise NotImplementedError, "from_string method is not implemented for class #{self}"
   end
 
-  def self.valid?(serialized_data)
+  def valid?()
     raise NotImplementedError, "valid? method is not implemented for class #{self}"
   end
 
@@ -50,6 +50,11 @@ class StudentBase
     return git.match?(/^(https:\/\/)?(www\.)?github.com\/[a-zA-Z0-9_-]+$/)
   end
 
+  def self.is_name?(val)
+    return false if val == nil
+    return val.match?(/^[A-Z][a-z]+$/)
+  end
+
   def self.read_from_txt(file_path)
     raise ArgumentError, "Invalid file path" unless File.file?(file_path)
     students = []
@@ -59,7 +64,7 @@ class StudentBase
 
         # string keys to symbols
         symbolized_data = json_data.transform_keys(&:to_sym)
-        students << self.from_hash(symbolized_data)
+        students << self.from_hash(**symbolized_data)
       end
     end
     return students
@@ -72,6 +77,11 @@ class StudentBase
       end
     end
   end
+
+  def contact()
+    raise NotImplementedError, "contact method is not implemented for class #{self}"
+  end
+
 end
 
 
@@ -80,52 +90,60 @@ class Student < StudentBase
   attr_reader :id, :phone, :tg_username, :email
 
   def initialize(id, surname, name, patronymic, phone: nil, tg_username: nil, email: nil, git: nil)
-    raise ArgumentError, "Invalid or missing phone number" if phone && !Student.is_phone_number?(phone)
-    raise ArgumentError, "Invalid or missing tg_username" if tg_username && !Student.is_tg_username?(tg_username)
-    raise ArgumentError, "Invalid or missing email" if email && !Student.is_email?(email)
+    raise ArgumentError, "Invalid or missing surname" unless surname && Student.is_name?(surname)
+    raise ArgumentError, "Invalid or missing name" unless name && Student.is_name?(name)
+    raise ArgumentError, "Invalid or missing patronymic" unless patronymic && Student.is_name?(patronymic)
 
     super(id, git: git)
-    @surname = surname
-    @name = name
-    @patronymic = patronymic
-    @phone = phone
-    @tg_username = tg_username
-    @email = email
+    self.surname = surname
+    self.name = name
+    self.patronymic = patronymic
+    self.phone = phone
+    self.tg_username = tg_username
+    self.email = email
   end
 
-  def self.from_hash(params)
-    raise ArgumentError, "Missing :id" unless params.key?(:id)
-    raise ArgumentError, "Missing :surname" unless params.key?(:surname)
-    raise ArgumentError, "Missing :name" unless params.key?(:name)
-    raise ArgumentError, "Missing :patronymic" unless params.key?(:patronymic)
-
-    raise ArgumentError, "Invalid phone number" if params.key?(:phone) && !Student.is_phone_number?(params[:phone])
-    raise ArgumentError, "Invalid tg_username" if params.key?(:tg_username) && !Student.is_tg_username?(params[:tg_username])
-    raise ArgumentError, "Invalid email" if params.key?(:email) && !Student.is_email?(params[:email])
-    raise ArgumentError, "Invalid git" if params.key?(:git) && !Student.is_git?(params[:git])
-
+  def self.from_hash(id: nil, surname: nil, name: nil, patronymic: nil, phone: nil, tg_username: nil, email: nil, git: nil)
     return Student.new(
-      params[:id], 
-      params[:surname],
-      params[:name],
-      params[:patronymic],
-      phone: params[:phone],
-      tg_username: params[:tg_username],
-      email: params[:email],
-      git: params[:git]
+      id, 
+      surname,
+      name,
+      patronymic,
+      phone: phone,
+      tg_username: tg_username,
+      email: email,
+      git: git
       )
   end
 
+  def contact()
+    return @phone if @phone
+    return @tg_username if @tg_username
+    return @email if @email
+  end
+
+  private def surname=(new_val)
+    @surname = new_val if new_val && Student.is_name?(new_val)
+  end
+
+  private def name=(new_val)
+    @name = new_val if new_val && Student.is_name?(new_val)
+  end
+
+  private def patronymic=(new_val)
+    @patronymic = new_val if new_val && Student.is_name?(new_val)
+  end
+
   private def email=(new_val)
-    @email = params[:email] if email && Student.is_email?(email)
+    @email = new_val if new_val && Student.is_email?(new_val)
   end
 
   private def phone=(new_val)
-    @phone = params[:phone] if phone && Student.is_phone_number?(phone)
+    @phone = new_val if new_val && Student.is_phone_number?(new_val)
   end 
 
   private def tg_username=(new_val)
-    @tg_username = params[:tg_username] if tg_username && Student.is_tg_username?(tg_username)
+    @tg_username = new_val if new_val && Student.is_tg_username?(new_val)
   end
 
 
@@ -139,13 +157,7 @@ class Student < StudentBase
   def to_s()
     result = "fio = #{@surname} #{@name[0]}. #{@patronymic[0]}"
     result += ", git = #{@git}" if @git
-    if @phone
-      result += ", phone = #{@phone}"
-    elsif @tg_username
-      result += "tg_username = #{@tg_username}"
-    elsif @email
-      result += "tg_username = #{@email}"
-    end
+    result += ", contact = #{self.contact}" if self.contact
     return result
   end
 
@@ -159,16 +171,16 @@ class Student < StudentBase
 
   def to_hash()
     hash = {
-      "id" => @id,
-      "surname" => @surname,
-      "name" => @name,
-      "patronymic" => @patronymic
+      id: @id,
+      surname: @surname,
+      name: @name,
+      patronymic: @patronymic
     }
 
-    hash["phone"] = @phone if @phone
-    hash["tg_username"] = @tg_username if @tg_username
-    hash["email"] = @email if @email
-    hash["git"] = @git if @git
+    hash[:phone] = @phone if @phone
+    hash[:tg_username] = @tg_username if @tg_username
+    hash[:email] = @email if @email
+    hash[:git] = @git if @git
     return hash
   end
 
@@ -185,9 +197,9 @@ class Student < StudentBase
   end
 
   def set_contacts(phone: nil, tg_username: nil, email: nil)
-    phone = phone
-    tg_username = tg_username
-    email = email
+    self.phone = phone
+    self.tg_username = tg_username
+    self.email = email
   end
 
   def get_info()
@@ -197,11 +209,8 @@ end
 
 
 class StudentShort < StudentBase
-  attr_reader :id, :fio, :git
+  attr_reader :id, :fio, :git, :contact
 
-  def contact
-    return @contact.split("=")[1]
-  end
 
   def initialize(id, fio, git, contact)
     super(id, git: git)
@@ -210,7 +219,7 @@ class StudentShort < StudentBase
     @contact = contact
   end
 
-  def self.from_hash(params = {})
+  def self.from_hash(id: nil, fio: nil, git: nil, contact: nil)
     raise ArgumentError, "Missing :fio" unless params.key?(:fio)
     raise ArgumentError, "Missing :contact" unless params.key?(:contact)
 
@@ -229,14 +238,14 @@ class StudentShort < StudentBase
       if pair.length != 2
         raise ArgumentError, "Invalid data format"
       end
-
+      
       case pair[0].strip
       when "fio"
         fio = pair[1].strip
       when "git"
         git = pair[1].strip
-      when "phone", "tg_username", "email"
-        contact = pair[0].strip + "=" + pair[1].strip
+      when "contact"
+        contact = pair[1].strip
       else
         raise ArgumentError, "Invalid data format"
       end

@@ -5,10 +5,13 @@ class StudentBase
   attr_reader :id, :git
 
   def initialize(id, git: nil)
-    raise ArgumentError, "Invalid or missing git" if git && !StudentBase.is_git?(git)
 
     @id = id
     @git = git
+  end
+
+  private def git=(new_val)
+    @git = new_val if new_val && Student.is_git?(new_val)
   end
 
   def to_hash()
@@ -29,6 +32,14 @@ class StudentBase
 
   def valid?()
     raise NotImplementedError, "valid? method is not implemented for class #{self}"
+  end
+
+  def has_contact?()
+    return self.contact != nil
+  end
+
+  def has_git?()
+    return StudentBase.is_git?(@git)
   end
 
   def self.is_phone_number?(phone_number)
@@ -89,17 +100,17 @@ class Student < StudentBase
   attr_reader :phone, :tg_username, :email
 
   def initialize(id, surname, name, patronymic, phone: nil, tg_username: nil, email: nil, git: nil)
-    raise ArgumentError, "Invalid or missing surname" unless surname && Student.is_title(surname)
-    raise ArgumentError, "Invalid or missing name" unless name && Student.is_title(name)
-    raise ArgumentError, "Invalid or missing patronymic" unless patronymic && Student.is_title(patronymic)
+    raise ArgumentError, "Invalid or missing surname" unless surname && Student.is_name?(surname)
+    raise ArgumentError, "Invalid or missing name" unless name && Student.is_name?(name)
+    raise ArgumentError, "Invalid or missing patronymic" unless patronymic && Student.is_name?(patronymic)
 
     super(id, git: git)
-    self.surname = surname
-    self.name = name
-    self.patronymic = patronymic
-    self.phone = phone
-    self.tg_username = tg_username
-    self.email = email
+    @surname = surname
+    @name = name
+    @patronymic = patronymic
+    @phone = phone
+    @tg_username = tg_username
+    @email = email
   end
 
   def self.from_hash(id: nil, surname: nil, name: nil, patronymic: nil, phone: nil, tg_username: nil, email: nil, git: nil)
@@ -122,15 +133,15 @@ class Student < StudentBase
   end
 
   private def surname=(new_val)
-    @surname = new_val if new_val && Student.is_title(new_val)
+    @surname = new_val if new_val && Student.is_name?(new_val)
   end
 
   private def name=(new_val)
-    @name = new_val if new_val && Student.is_title(new_val)
+    @name = new_val if new_val && Student.is_name?(new_val)
   end
 
   private def patronymic=(new_val)
-    @patronymic = new_val if new_val && Student.is_title(new_val)
+    @patronymic = new_val if new_val && Student.is_name?(new_val)
   end
 
   private def email=(new_val)
@@ -143,10 +154,6 @@ class Student < StudentBase
 
   private def tg_username=(new_val)
     @tg_username = new_val if new_val && Student.is_tg_username?(new_val)
-  end
-
-  private def git=(new_val)
-    @git = new_val if new_val && Student.is_git?(new_val)
   end
 
 
@@ -224,9 +231,9 @@ class StudentShort < StudentBase
   end
 
   def self.from_string(id, data)
-    fio = ""
-    git = ""
-    contact = ""
+    fio = nil
+    git = nil
+    contact = nil
 
     data.split(",").map do |field|
 
@@ -254,15 +261,14 @@ class StudentShort < StudentBase
     hash = {
       "id": @id,
       "fio": @fio,
-      "git": @git,
-      "contact":contact
+      "contact": @contact
     }
+    hash[:git] = @git if @git
     return hash
   end
 
   def valid?()
-    contact = @contact.split("=")
-    return (Student.is_phone_number?(contact[1]) || Student.is_tg_username?(contact[1]) || Student.is_email?(contact[1])) && Student.is_git?(@git)
+    return (Student.is_phone_number?(@contact) || Student.is_tg_username?(@contact) || Student.is_email?(@contact)) && Student.is_git?(@git)
   end
 
 end

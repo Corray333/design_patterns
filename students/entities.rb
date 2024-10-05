@@ -2,6 +2,7 @@ require "json"
 
 
 class StudentBase
+  attr_reader :id, :git
 
   def initialize(id, git: nil)
     raise ArgumentError, "Invalid or missing git" if git && !StudentBase.is_git?(git)
@@ -84,15 +85,13 @@ class StudentBase
 
 end
 
-
 class Student < StudentBase
-  attr_accessor :surname, :name, :patronymic, :git
-  attr_reader :id, :phone, :tg_username, :email
+  attr_reader :phone, :tg_username, :email
 
   def initialize(id, surname, name, patronymic, phone: nil, tg_username: nil, email: nil, git: nil)
-    raise ArgumentError, "Invalid or missing surname" unless surname && Student.is_name?(surname)
-    raise ArgumentError, "Invalid or missing name" unless name && Student.is_name?(name)
-    raise ArgumentError, "Invalid or missing patronymic" unless patronymic && Student.is_name?(patronymic)
+    raise ArgumentError, "Invalid or missing surname" unless surname && Student.is_title(surname)
+    raise ArgumentError, "Invalid or missing name" unless name && Student.is_title(name)
+    raise ArgumentError, "Invalid or missing patronymic" unless patronymic && Student.is_title(patronymic)
 
     super(id, git: git)
     self.surname = surname
@@ -123,15 +122,15 @@ class Student < StudentBase
   end
 
   private def surname=(new_val)
-    @surname = new_val if new_val && Student.is_name?(new_val)
+    @surname = new_val if new_val && Student.is_title(new_val)
   end
 
   private def name=(new_val)
-    @name = new_val if new_val && Student.is_name?(new_val)
+    @name = new_val if new_val && Student.is_title(new_val)
   end
 
   private def patronymic=(new_val)
-    @patronymic = new_val if new_val && Student.is_name?(new_val)
+    @patronymic = new_val if new_val && Student.is_title(new_val)
   end
 
   private def email=(new_val)
@@ -146,9 +145,12 @@ class Student < StudentBase
     @tg_username = new_val if new_val && Student.is_tg_username?(new_val)
   end
 
+  private def git=(new_val)
+    @git = new_val if new_val && Student.is_git?(new_val)
+  end
+
 
   def write_to_txt(file_path)
-    # TODO: mayby "a"?
     File.open(file_path, "w") do |file|
       file.puts(self.to_json)
     end
@@ -201,20 +203,15 @@ class Student < StudentBase
     self.tg_username = tg_username
     self.email = email
   end
-
-  def get_info()
-    return self.to_s()
-  end
 end
 
 
 class StudentShort < StudentBase
-  attr_reader :id, :fio, :git, :contact
+  attr_reader :fio, :contact
 
 
   def initialize(id, fio, git, contact)
     super(id, git: git)
-
     @fio = fio
     @contact = contact
   end

@@ -4,13 +4,12 @@ require "json"
 class StudentBase
   attr_reader :id, :git
 
-  def initialize(id, git: nil)
-
+  def initialize(id: nil, git: nil)
     @id = id
     @git = git
   end
 
-  private def git=(new_val)
+  def git=(new_val)
     @git = new_val if new_val && Student.is_git?(new_val)
   end
 
@@ -99,12 +98,12 @@ end
 class Student < StudentBase
   attr_reader :phone, :tg_username, :email
 
-  def initialize(id, surname, name, patronymic, phone: nil, tg_username: nil, email: nil, git: nil)
+  def initialize(surname, name, patronymic, id: nil, phone: nil, tg_username: nil, email: nil, git: nil)
     raise ArgumentError, "Invalid or missing surname" unless surname && Student.is_name?(surname)
     raise ArgumentError, "Invalid or missing name" unless name && Student.is_name?(name)
     raise ArgumentError, "Invalid or missing patronymic" unless patronymic && Student.is_name?(patronymic)
 
-    super(id, git: git)
+    super(id: id, git: git)
     @surname = surname
     @name = name
     @patronymic = patronymic
@@ -115,10 +114,10 @@ class Student < StudentBase
 
   def self.from_hash(id: nil, surname: nil, name: nil, patronymic: nil, phone: nil, tg_username: nil, email: nil, git: nil)
     return Student.new(
-      id, 
       surname,
       name,
       patronymic,
+      id: id,
       phone: phone,
       tg_username: tg_username,
       email: email,
@@ -132,30 +131,29 @@ class Student < StudentBase
     return @email if @email
   end
 
-  private def surname=(new_val)
+  def surname=(new_val)
     @surname = new_val if new_val && Student.is_name?(new_val)
   end
 
-  private def name=(new_val)
+  def name=(new_val)
     @name = new_val if new_val && Student.is_name?(new_val)
   end
 
-  private def patronymic=(new_val)
+  def patronymic=(new_val)
     @patronymic = new_val if new_val && Student.is_name?(new_val)
   end
 
-  private def email=(new_val)
+  def email=(new_val)
     @email = new_val if new_val && Student.is_email?(new_val)
   end
 
-  private def phone=(new_val)
+  def phone=(new_val)
     @phone = new_val if new_val && Student.is_phone_number?(new_val)
   end 
 
-  private def tg_username=(new_val)
+  def tg_username=(new_val)
     @tg_username = new_val if new_val && Student.is_tg_username?(new_val)
   end
-
 
   def write_to_txt(file_path)
     File.open(file_path, "w") do |file|
@@ -180,12 +178,12 @@ class Student < StudentBase
 
   def to_hash()
     hash = {
-      id: @id,
       surname: @surname,
       name: @name,
       patronymic: @patronymic
     }
 
+    hash[:id] = @id if @id
     hash[:phone] = @phone if @phone
     hash[:tg_username] = @tg_username if @tg_username
     hash[:email] = @email if @email
@@ -218,19 +216,12 @@ class StudentShort < StudentBase
 
 
   def initialize(id, fio, git, contact)
-    super(id, git: git)
+    super(id:id, git: git)
     @fio = fio
     @contact = contact
   end
 
-  def self.from_hash(id: nil, fio: nil, git: nil, contact: nil)
-    raise ArgumentError, "Missing :fio" unless params.key?(:fio)
-    raise ArgumentError, "Missing :contact" unless params.key?(:contact)
-
-    return StudentShort.new(id, fio, git, contact)
-  end
-
-  def self.from_string(id, data)
+  def self.from_string(data, id: nil)
     fio = nil
     git = nil
     contact = nil
@@ -259,10 +250,10 @@ class StudentShort < StudentBase
 
   def to_hash()
     hash = {
-      "id": @id,
       "fio": @fio,
       "contact": @contact
     }
+    hash[:id] = @id if @id
     hash[:git] = @git if @git
     return hash
   end

@@ -13,7 +13,6 @@ def test_write_and_read()
   students = []
 
   students << Student.new(
-    1,
     "Anikin",
     "Mark",
     "Andreevich",
@@ -21,7 +20,6 @@ def test_write_and_read()
     git: "github.com/Corray333"
   )
   students << Student.new(
-    2,
     "Masenko",
     "Maria",
     "Sergeevna",
@@ -43,7 +41,6 @@ tests << Test.new("write_and_read", method(:test_write_and_read))
 
 def test_student_and_short_student_compability()
   student = Student.new(
-    1,
     "Anikin",
     "Mark",
     "Andreevich",
@@ -51,7 +48,7 @@ def test_student_and_short_student_compability()
     git: "github.com/Corray333"
   )
   student_str = student.to_s()
-  short_student = StudentShort.from_string(1, student_str)
+  short_student = StudentShort.from_string(student_str, id: student.id)
 
   contact = ""
   if student.phone

@@ -1,4 +1,5 @@
-require "./entities"
+require "./Student"
+require "./StudentShort"
 
 class Test
   def initialize(name, func)

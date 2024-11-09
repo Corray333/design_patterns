@@ -1,4 +1,5 @@
-require "./entities"
+require "./Student"
+require "./StudentShort"
 
 def main()
   students = []

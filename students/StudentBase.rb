@@ -65,29 +65,6 @@ class StudentBase
     return val.match?(/^[A-Z][a-z]+$/)
   end
 
-  def self.read_from_txt(file_path)
-    raise ArgumentError, "Invalid file path" unless File.file?(file_path)
-    students = []
-    File.open(file_path, "r") do |file|
-      file.each_line do |line|
-        json_data = JSON.parse(line)
-
-        # string keys to symbols
-        symbolized_data = json_data.transform_keys(&:to_sym)
-        students << self.from_hash(**symbolized_data)
-      end
-    end
-    return students
-  end
-
-  def self.write_to_txt(file_path, students)
-    File.open(file_path, "w") do |file|
-      students.each do |student|
-        file.puts(student.to_json)
-      end
-    end
-  end
-
   def contact()
     raise NotImplementedError, "contact method is not implemented for class #{self}"
   end

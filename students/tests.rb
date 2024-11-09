@@ -1,5 +1,6 @@
 require "./Student"
 require "./StudentShort"
+require "./student_serialize"
 
 class Test
   def initialize(name, func)
@@ -27,9 +28,9 @@ def test_write_and_read()
     phone: "89234567890",
   )
 
-  Student.write_to_txt("students.txt", students)
+  write_student_to_txt("students.txt", students)
 
-  new_students = Student.read_from_txt("students.txt")
+  new_students = read_student_from_txt("students.txt")
 
   if students == new_students
     return true

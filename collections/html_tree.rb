@@ -65,3 +65,5 @@ class HTMLNode < Node
   end
 end
 
+root = HTMLNode.build_tree('<div><p>hello</p><p>world</p></div>')
+root.each { |node| puts node }

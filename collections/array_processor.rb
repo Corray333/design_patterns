@@ -34,7 +34,7 @@ class ArrayProcessor
   def inject(initial, &block)
     result = initial
     @arr.each { |el| result = block.call(result, el) }
-    result
+    return result
   end
 
   def min_by(&block)

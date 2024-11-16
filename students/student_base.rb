@@ -65,6 +65,10 @@ class StudentBase
     return val.match?(/^[A-Z][a-z]+$/)
   end
 
+  def self.is_birthdate?(val)
+    return false if val.is_a?(Numeric)
+  end
+
   def contact()
     raise NotImplementedError, "contact method is not implemented for class #{self}"
   end

@@ -1,10 +1,11 @@
 require "json"
-require "./StudentBase"
+require "../student_base"
 
-class Student < StudentBase
-  attr_reader :phone, :tg_username, :email
+class Student < StudentBase 
+  include Comparable
+  attr_reader :phone, :tg_username, :email, :birthdate
 
-  def initialize(surname, name, patronymic, id: nil, phone: nil, tg_username: nil, email: nil, git: nil)
+  def initialize(surname, name, patronymic, id: nil, phone: nil, tg_username: nil, email: nil, git: nil, birthdate: nil)
     raise ArgumentError, "Invalid or missing surname" unless surname && Student.is_name?(surname)
     raise ArgumentError, "Invalid or missing name" unless name && Student.is_name?(name)
     raise ArgumentError, "Invalid or missing patronymic" unless patronymic && Student.is_name?(patronymic)
@@ -16,9 +17,10 @@ class Student < StudentBase
     @phone = phone
     @tg_username = tg_username
     @email = email
+    @birthdate = birthdate
   end
 
-  def self.from_hash(id: nil, surname: nil, name: nil, patronymic: nil, phone: nil, tg_username: nil, email: nil, git: nil)
+  def self.from_hash(id: nil, surname: nil, name: nil, patronymic: nil, phone: nil, tg_username: nil, email: nil, git: nil, birthdate: nil)
     return Student.new(
       surname,
       name,
@@ -27,7 +29,8 @@ class Student < StudentBase
       phone: phone,
       tg_username: tg_username,
       email: email,
-      git: git
+      git: git,
+      birthdate: birthdate,
       )
   end
 
@@ -94,6 +97,7 @@ class Student < StudentBase
     hash[:tg_username] = @tg_username if @tg_username
     hash[:email] = @email if @email
     hash[:git] = @git if @git
+    hash[:birthdate] = @birthdate if @birthdate
     return hash
   end
 
@@ -105,8 +109,12 @@ class Student < StudentBase
     return Student.from_json(serialized_data)
   end
 
+  def <=>(other)
+    return @birthdate <=> other.birthdate
+  end
+
   def valid?()
-    return Student.is_git?(@git) && (Student.is_email?(@email) || Student.is_phone_number?(@phone) || Student.is_tg_username?(@tg_username))
+    return Student.is_git?(@git) && (Student.is_email?(@email) && Student.is_phone_number?(@phone) && Student.is_tg_username?(@tg_username)) && Student.is_birthdate?(@birthdate)
   end
 
   def set_contacts(phone: nil, tg_username: nil, email: nil)

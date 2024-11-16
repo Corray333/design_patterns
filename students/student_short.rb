@@ -1,5 +1,5 @@
 require "json"
-require "./StudentBase"
+require "./student_abse"
 
 
 class StudentShort < StudentBase

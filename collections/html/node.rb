@@ -1,3 +1,6 @@
+require "./dfs"
+require "./bfs"
+
 class Node
 
   attr_reader :children
@@ -10,10 +13,11 @@ class Node
     @children << node
   end
 
-  def traverse_depth(node, &block)
-    return if node.nil?
+  def dfs
+    return DFS_iterator.new(self)
+  end
 
-    block.call(node)
-    node.children.each { |child| traverse_depth(child, &block) }
+  def bfs
+    return BFS_iterator.new(self)
   end
 end

@@ -3,11 +3,11 @@ require "./iterator.rb"
 class DFS_iterator < Iterator
   def enumerator
     Enumerator.new do |yielder|
-      enum_stack = [self.root]
-      until enum_stack.empty?
-        element = enum_stack.pop
+      stack = [self.root]
+      until stack.empty?
+        element = stack.pop
         yielder << element
-        enum_stack.concat element.children.reverse if element.children
+        stack.concat element.children.reverse if element.children
       end
     end
   end

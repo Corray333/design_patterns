@@ -1,24 +1,38 @@
 require "./node"
-require "./dfs"
-require "./bfs"
 
 class HTMLNode < Node
+  private_class_method :new
+
+  TAGS = {
+    html: 'html',
+    head: 'head',
+    body: 'body',
+    div: 'div',
+    span: 'span',
+    p: 'p',
+    a: 'a',
+    img: 'img',
+    ul: 'ul',
+    li: 'li',
+    h1: 'h1',
+    h2: 'h2',
+    h3: 'h3',
+  }.freeze
+
+  ATTRIBUTES = {
+    class: 'class',
+    style: 'style',
+    id: 'id'
+  }
+  
   def initialize(tag, attributes = {})
     super()
-    @name = tag
+    @tag = TAGS[tag.to_sym] || tag
     @attributes = attributes
   end
 
   def to_s
-    "<#{@name} #{@attributes.inspect}>"
-  end
-
-  def dfs
-    return DFS_iterator.new(self)
-  end
-
-  def bfs
-    return BFS_iterator.new(self)
+    "<#{@tag} #{@attributes.inspect}>"
   end
 
   def self.build_tree(html)
@@ -35,9 +49,9 @@ class HTMLNode < Node
           current_tag = tag_stack.pop
         else
           tag_name = token.match(/<(\w+)/)[1]
-          attributes = token.scan(/(\w+)='([^']+)/).to_h
+          attributes = token.scan(/(\w+)="([^"]+)/).to_h
 
-          new_tag = HTMLNode.new(tag_name, attributes)
+          new_tag = new(tag_name, attributes)
           current_tag.add_child(new_tag) if current_tag
           root_tag ||= new_tag
 
@@ -48,10 +62,23 @@ class HTMLNode < Node
         end
 
       else
-        current_tag.add_child(HTMLNode.new('text', { 'content' => token.strip })) if !token.strip.empty?
+        current_tag.add_child(new('text', { 'content' => token.strip })) if !token.strip.empty?
       end
 
     end
     return root_tag
   end
+
+  def number_of_children()
+    return @children.size
+  end
+
+  def has_child?()
+    return @children.size > 0
+  end
+
+  def style()
+    return @attributes[ATTRIBUTES[:style]]
+  end
+
 end

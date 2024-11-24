@@ -1,10 +1,16 @@
 require "./html_node"
 
-root = HTMLNode.build_tree("<div><p><span class=\"test\" style=\"background: black;\">hello</span></p><p><span>hello</span></p></div>")
+root = HTMLNode.build_tree('<html lang="ru">
+  <head>
+      <meta charset="UTF-8"/>
+      <title>Пример</title>
+  </head>
+  <body>
+      <h1 id="main-heading" class="header-text">Привет!</h1>
+      <p style="font-family: Arial, sans-serif; background-color: #f4f4f4;">Это пример простого HTML-документа.</p>
+  </body>
+  </html>')
 
-puts "DFS:"
-root.dfs.each { |node| puts node }
+puts root.dfs.each {|el| puts(el, el.children)}
 puts
-
-puts "BFS:"
-root.bfs.each { |node| puts node }
+puts root.bfs.each {|el| puts(el, el.children)}

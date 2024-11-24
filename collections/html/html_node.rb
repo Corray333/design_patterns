@@ -3,6 +3,8 @@ require "./node"
 class HTMLNode < Node
   private_class_method :new
 
+  attr_reader :tag
+
   TAGS = {
     html: 'html',
     head: 'head',
@@ -17,12 +19,15 @@ class HTMLNode < Node
     h1: 'h1',
     h2: 'h2',
     h3: 'h3',
+    title: 'title'
   }.freeze
 
   ATTRIBUTES = {
     class: 'class',
     style: 'style',
-    id: 'id'
+    id: 'id',
+    charset: 'charset',
+    lang: 'lang'
   }
   
   def initialize(tag, attributes = {})

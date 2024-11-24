@@ -5,6 +5,8 @@ require "./student_abse"
 class StudentShort < StudentBase
   attr_reader :fio, :contact
 
+  private_class_method :new
+
 
   def initialize(id, fio, git, contact)
     super(id:id, git: git)
@@ -36,7 +38,7 @@ class StudentShort < StudentBase
         raise ArgumentError, "Invalid data format"
       end
     end
-    return StudentShort.new(id, fio, git, contact)
+    return new(id, fio, git, contact)
   end
 
   def to_hash()

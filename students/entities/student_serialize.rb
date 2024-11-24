@@ -1,5 +1,5 @@
-require "./Student"
-require "./StudentShort"
+require "./student"
+require "./student_short"
 
 def read_student_from_txt(file_path)
   raise ArgumentError, "Invalid file path" unless File.file?(file_path)

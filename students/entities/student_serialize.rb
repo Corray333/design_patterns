@@ -19,7 +19,7 @@ end
 def write_student_to_txt(file_path, students)
   File.open(file_path, "w") do |file|
     students.each do |student|
-      file.puts(student.to_json)
+      file.puts(JSON.generate(student.to_hash))
     end
   end
 end

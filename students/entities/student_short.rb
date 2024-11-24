@@ -5,13 +5,16 @@ require "./entities/student_base"
 class StudentShort < StudentBase
   attr_reader :fio, :contact, :git
 
-  # private_class_method :new
-
+  private_class_method :new
 
   def initialize(id, fio, git, contact)
     super(id:id, git: git)
     @fio = fio
     @contact = contact
+  end
+
+  def self.from_student(student)
+    return new(student.id, student.fio, student.git, student.contact)
   end
 
   def self.from_string(data, id: nil)

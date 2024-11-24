@@ -70,8 +70,12 @@ class Student < StudentBase
     end
   end
 
+  def fio()
+    return "#{self.fio()} #{@name[0]}. #{@patronymic[0]}"
+  end
+
   def to_s()
-    result = "fio = #{@surname} #{@name[0]}. #{@patronymic[0]}"
+    result = "fio = #{fio()}"
     result += ", git = #{@git}" if @git
     result += ", contact = #{self.contact}" if self.contact
     return result

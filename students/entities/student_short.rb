@@ -1,11 +1,11 @@
 require "json"
-require "./student_abse"
+require "./entities/student_base"
 
 
 class StudentShort < StudentBase
-  attr_reader :fio, :contact
+  attr_reader :fio, :contact, :git
 
-  private_class_method :new
+  # private_class_method :new
 
 
   def initialize(id, fio, git, contact)
@@ -49,6 +49,10 @@ class StudentShort < StudentBase
     hash[:id] = @id if @id
     hash[:git] = @git if @git
     return hash
+  end
+
+  def to_s()
+    return "id: #{@id}, fio: #{@fio}, git: #{@git}, contact: #{@contact}"
   end
 
   def valid?()

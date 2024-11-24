@@ -1,6 +1,7 @@
 class DataTable
   def initialize(data)
     @data = data
+    @data.freeze
   end
 
   def count_rows ()

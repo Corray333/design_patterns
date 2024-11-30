@@ -1,5 +1,8 @@
 require "./data_list_student_short/data_list_student_short"
 require "./entities/student_short"
+require "./entities/student"
+require "./student_list/student_list"
+require "./reader_writer/student_reader_writer_json"
 
 d = DataListStudentShort.new([
   StudentShort.new(1, "Ivanov Ivan Ivanovich", "ivanov", "mail@gmail.com"),
@@ -8,3 +11,6 @@ d = DataListStudentShort.new([
 ])
 
 puts d.get_data().get_element(1, 1) 
+
+student_list = StudentList.new("students.json", StudentReaderWriterJson.new())
+p student_list.get_student_by_id(3)

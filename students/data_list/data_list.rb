@@ -2,15 +2,14 @@ require "set"
 
 class DataList
   def initialize(data)
-    throw ArgumentError, "Data must be an array" if !data.is_a?(Array)
-
-    @data = data
+    self.data = data
     @data.freeze
 
     @selected = Set.new
   end
 
   def data=(data)
+    throw ArgumentError, "Data must be an array" if !data.is_a?(Array)
     @data = data
   end
 

@@ -13,9 +13,9 @@ class DataTable
   end
 
   def get_element(row, col)
-    throw IndexError, "Row index out of bounds" if row >= @data.length 
+    throw IndexError, "Row index out of range" if row >= @data.length 
 
-    throw IndexError, "Column index out of bounds" if col >= @data.first.length 
+    throw IndexError, "Column index out of range" if col >= @data.first.length 
 
     return @data[row][col].dup
   end

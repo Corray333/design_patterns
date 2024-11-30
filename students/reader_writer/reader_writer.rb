@@ -6,5 +6,4 @@ class ReaderWriter
   def write
     raise NotImplementedError, "Method write is not implemented"
   end
-
 end

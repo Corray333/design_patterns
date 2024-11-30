@@ -1,28 +1,23 @@
 require 'json'
 require "./reader_writer/reader_writer"
-requier "./entities/student"
+require "./entities/student"
 
 class StudentReaderWriterJson < ReaderWriter
-  def read (path)
+  def read(path)
     raise ArgumentError, "Invalid file path" unless File.file?(path)
-    students = []
-    File.open(path, "r") do |file|
-      file.each_line do |line|
-        json_data = JSON.parse(line)
-
-        # string keys to symbols
-        symbolized_data = json_data.transform_keys(&:to_sym)
-        students << Student.from_hash(**symbolized_data)
-      end
+    file_content = File.read(path)
+    json_data = JSON.parse(file_content)
+    students = json_data.map do |student_data|
+      symbolized_data = student_data.transform_keys(&:to_sym)
+      Student.from_hash(**symbolized_data)
     end
     return students
   end
 
-  def write (path, students)
+  def write(path, students)
+    json_data = students.map(&:to_hash)
     File.open(path, "w") do |file|
-      students.each do |student|
-        file.puts(student.to_json)
-      end
+      file.write(JSON.pretty_generate(json_data))
     end
   end
 end

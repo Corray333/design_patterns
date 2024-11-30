@@ -5,7 +5,6 @@ require "./entities/student_base"
 class StudentShort < StudentBase
   attr_reader :fio, :contact, :git
 
-  private_class_method :new
 
   def initialize(id, fio, git, contact)
     super(id:id, git: git)

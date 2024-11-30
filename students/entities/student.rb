@@ -1,5 +1,5 @@
 require "json"
-require "../student_base"
+require "./entities/student_base"
 
 class Student < StudentBase 
   include Comparable

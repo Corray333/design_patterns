@@ -29,6 +29,16 @@ class DataList
   end
 
   def get_data()
+    data = []
+
+    @data.each_with_index do |student, index|
+      data.push(self.get_row(index))
+    end
+
+    return DataTable.new(data)
+  end
+
+  def get_row
     raise NotImplementedError, "Not implemented"
   end
 end

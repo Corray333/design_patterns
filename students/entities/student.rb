@@ -71,7 +71,7 @@ class Student < StudentBase
   end
 
   def fio()
-    return "#{self.fio()} #{@name[0]}. #{@patronymic[0]}"
+    return "#{@surname} #{@name[0]}. #{@patronymic[0]}"
   end
 
   def to_s()

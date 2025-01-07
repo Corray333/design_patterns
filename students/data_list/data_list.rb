@@ -1,7 +1,13 @@
 require "set"
+require "./helpers/deep_dup"
 
 class DataList
+  include DeepDup
+
+  attr_accessor :index
+
   def initialize(data)
+    self.index = 0
     self.data = data
     @data.freeze
 
@@ -9,8 +15,12 @@ class DataList
   end
 
   def data=(data)
-    throw ArgumentError, "Data must be an array" if !data.is_a?(Array)
-    @data = data
+    @data = {}
+
+    data.each do |el|
+      @data[self.index] = deep_dup(el)
+      self.index = self.index + 1
+    end
   end
 
   def select(num)
@@ -31,8 +41,8 @@ class DataList
   def get_data()
     data = []
 
-    @data.each_with_index do |student, index|
-      data.push(self.get_row(index))
+    @data.each do |k, v|
+      data.push(self.get_row(k))
     end
 
     return DataTable.new(data)

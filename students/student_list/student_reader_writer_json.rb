@@ -1,5 +1,5 @@
 require 'json'
-require "./reader_writer/reader_writer"
+require "./student_list/reader_writer"
 require "./entities/student"
 
 class StudentReaderWriterJson < ReaderWriter

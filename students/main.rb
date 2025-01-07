@@ -1,9 +1,10 @@
-require "./data_list_student_short/data_list_student_short"
+require "./data_list/data_list_student_short"
 require "./entities/student_short"
 require "./entities/student"
 require "./student_list/student_list"
 require "./student_list/student_reader_writer_json"
 require "./student_list/student_reader_writer_yaml"
+require "./student_list/student_list_db"
 
 d = DataListStudentShort.new([
   StudentShort.new(1, "Ivanov Ivan Ivanovich", "ivanov", "mail@gmail.com"),
@@ -19,3 +20,15 @@ student_list.sort_by_name()
 p student_list.get_student_by_id(3)
 
 p student_list.get_student_page(2, 2).get_data().get_element(1, 0)
+
+
+p "DB from here: \n"
+
+db_list = StudentListDB.instance
+student_to_be_updated = db_list.get_student_by_id(1)
+p student_to_be_updated
+p db_list.get_student_page(2, 2).get_data().get_element(0, 0)
+student_to_be_updated.birthdate = Time.now.to_i
+db_list.update_student(student_to_be_updated)
+student_to_be_updated = db_list.get_student_by_id(1)
+p student_to_be_updated

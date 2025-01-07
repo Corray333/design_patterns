@@ -3,7 +3,7 @@ require "./entities/student_base"
 
 class Student < StudentBase 
   include Comparable
-  attr_reader :phone, :tg_username, :email, :birthdate
+  attr_reader :phone, :tg_username, :email, :birthdate, :surname, :name, :patronymic
 
   def initialize(surname, name, patronymic, id: nil, phone: nil, tg_username: nil, email: nil, git: nil, birthdate: nil)
     raise ArgumentError, "Invalid or missing surname" unless surname && Student.is_name?(surname)
@@ -64,6 +64,10 @@ class Student < StudentBase
     @tg_username = new_val if new_val && Student.is_tg_username?(new_val)
   end
 
+  def birthdate=(new_val)
+    @birthdate = new_val if new_val
+  end
+
   def write_to_txt(file_path)
     File.open(file_path, "w") do |file|
       file.puts(self.to_json)
@@ -118,7 +122,7 @@ class Student < StudentBase
   end
 
   def valid?()
-    return Student.is_git?(@git) && (Student.is_email?(@email) && Student.is_phone_number?(@phone) && Student.is_tg_username?(@tg_username)) && Student.is_birthdate?(@birthdate)
+    return Student.is_git?(@git) && (Student.is_email?(@email) && Student.is_phone_number?(@phone) && Student.is_tg_username?(@tg_username))
   end
 
   def set_contacts(phone: nil, tg_username: nil, email: nil)

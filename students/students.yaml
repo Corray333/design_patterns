@@ -1,0 +1,49 @@
+- id: 1
+  surname: Masenko
+  name: Maria
+  patronymic: Sergeevna
+  phone: "89234567890"
+  tg_username: maria_masenko
+  email: maria.masenko@example.com
+  git: https://github.com/maria_masenko
+  birthdate: 631152000
+
+- id: 3
+  surname: Anikin
+  name: Mark
+  patronymic: Andreevich
+  phone: "89234567890"
+  tg_username: mark_anikin
+  email: mark.anikin@example.com
+  git: https://github.com/mark_anikin
+  birthdate: 662688000
+
+- id: 4
+  surname: Ivanov
+  name: Ivan
+  patronymic: Ivanovich
+  phone: "89123456789"
+  tg_username: ivan_ivanov
+  email: ivan.ivanov@example.com
+  git: https://github.com/ivan_ivanov
+  birthdate: 694224000
+
+- id: 5
+  surname: Petrova
+  name: Anna
+  patronymic: Petrovna
+  phone: "89012345678"
+  tg_username: anna_petrova
+  email: anna.petrova@example.com
+  git: https://github.com/anna_petrova
+  birthdate: 725846400
+
+- id: 6
+  surname: Sidorov
+  name: Petr
+  patronymic: Sidorovich
+  phone: "89987654321"
+  tg_username: petr_sidorov
+  email: petr.sidorov@example.com
+  git: https://github.com/petr_sidorov
+  birthdate: 757382400

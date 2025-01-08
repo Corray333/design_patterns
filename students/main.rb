@@ -23,6 +23,7 @@ p student_list.get_student_page(2, 2).get_data().get_element(1, 0)
 
 
 p "DB from here: \n"
+p "===================================================="
 
 db_list = StudentListDB.instance
 student_to_be_updated = db_list.get_student_by_id(1)

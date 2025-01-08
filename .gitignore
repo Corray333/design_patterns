@@ -1,2 +1,3 @@
 */*.txt
 experiments.rb
+.env

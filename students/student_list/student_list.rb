@@ -36,10 +36,6 @@ class StudentList
     return data_list
   end
 
-  def sort()
-    return @students.sort_by { |student| student.fio }
-  end
-
   def add_student(student)
     new_id = @students.map { |student| student.id }.max + 1
     student.id = new_id
@@ -52,16 +48,6 @@ class StudentList
     @students = @students.map { |s| s.id == student.id ? student : s }
   end
 
-  def student_is_new?(student)
-    @students.none? do |s|
-      (student.id && s.id == student.id) ||
-      (student.git && s.git == student.git) ||
-      (student.email && s.email == student.email) ||
-      (student.phone && s.phone == student.phone) ||
-      (student.tg_username && s.tg_username == student.tg_username)
-    end
-  end
-
   def delete_by_id(id)
     @students.delete_if { |student| student.id == id }
   end
@@ -72,6 +58,17 @@ class StudentList
 
   def sort_by_name()
     @students = @students.sort_by { |student| student.fio }
+  end
+
+  private
+  def student_is_new?(student)
+    @students.none? do |s|
+      (student.id && s.id == student.id) ||
+      (student.git && s.git == student.git) ||
+      (student.email && s.email == student.email) ||
+      (student.phone && s.phone == student.phone) ||
+      (student.tg_username && s.tg_username == student.tg_username)
+    end
   end
 
 end

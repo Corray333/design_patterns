@@ -13,6 +13,9 @@ class StudentListView < FXMainWindow
 
     main_frame = FXHorizontalFrame.new(self, LAYOUT_FILL_X | LAYOUT_FILL_Y)
 
+    filter_frame = FXVerticalFrame.new(main_frame, FRAME_SUNKEN | LAYOUT_FILL_Y | LAYOUT_FIX_WIDTH, width: 200)
+    draw_filtration(filter_frame)
+
     
     table_frame = FXVerticalFrame.new(main_frame, FRAME_SUNKEN | LAYOUT_FILL_X | LAYOUT_FILL_Y)
     draw_table(table_frame)
@@ -29,6 +32,47 @@ class StudentListView < FXMainWindow
   def create
     super
     show(PLACEMENT_SCREEN)
+  end
+
+  private def draw_filtration(filter_frame)
+    FXLabel.new(filter_frame, "Фамилия и инициалы:")
+    FXTextField.new(filter_frame, 20, nil, 0, TEXTFIELD_NORMAL | LAYOUT_FILL_X)
+    add_filter_section(filter_frame, "Git")
+
+    add_filter_section(filter_frame, "Почта")
+
+    add_filter_section(filter_frame, "Телефон")
+
+    add_filter_section(filter_frame, "Telegram")
+
+    FXButton.new(filter_frame, "Сбросить", opts: BUTTON_NORMAL)
+
+  end
+
+  private def add_filter_section(parent, label_text)
+    section_frame = FXVerticalFrame.new(parent, LAYOUT_FILL_X | LAYOUT_FIX_HEIGHT | FRAME_THICK, height: 80)
+    FXLabel.new(section_frame, label_text)
+  
+    combo_box = FXComboBox.new(section_frame, 3, nil, 0, COMBOBOX_STATIC | LAYOUT_FILL_X)
+    combo_box.numVisible = 3
+    combo_box.appendItem("Не важно")
+    combo_box.appendItem("Да")
+    combo_box.appendItem("Нет")
+    combo_box.setCurrentItem(0) 
+  
+    input_field = FXTextField.new(section_frame, 20, opts: TEXTFIELD_NORMAL | LAYOUT_FILL_X)
+    input_field.hide
+
+    combo_box.connect(SEL_COMMAND) do
+      case combo_box.currentItem
+      when 1
+        input_field.show
+      else
+        input_field.hide
+      end
+      section_frame.recalc
+    end
+
   end
 
   private def draw_table(parent_frame)

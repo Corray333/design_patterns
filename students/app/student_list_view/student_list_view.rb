@@ -1,3 +1,4 @@
+require_relative '../student_list_controller/student_list_controller.rb'
 require 'fox16'
 include Fox
 
@@ -6,7 +7,8 @@ class StudentListView < FXMainWindow
   def initialize(app)
     super(app, "Students",opts: DECOR_ALL & ~DECOR_RESIZE, width: 915, height: 440)
 
-    @items_per_page = 15
+    @controller = StudentListController.new(self)
+    @items_per_page = 3
     @current_page = 0
     @total_pages = 3
     @sort_order = :asc
@@ -156,4 +158,3 @@ class StudentListView < FXMainWindow
 
 
 end
-

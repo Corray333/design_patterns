@@ -1,6 +1,6 @@
 require 'json'
-require "./student_list/reader_writer"
-require "./entities/student"
+require_relative "./reader_writer"
+require_relative "../entities/student"
 
 class StudentReaderWriterJson < ReaderWriter
   def read(path)

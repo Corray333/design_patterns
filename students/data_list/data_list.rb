@@ -1,5 +1,5 @@
 require "set"
-require "./helpers/deep_dup"
+require_relative "../helpers/deep_dup"
 
 class DataList
   include DeepDup
@@ -12,6 +12,8 @@ class DataList
     @data.freeze
 
     @selected = Set.new
+
+    @observers = []
   end
 
   def data=(data)
@@ -50,5 +52,16 @@ class DataList
 
   def get_row
     raise NotImplementedError, "Not implemented"
+  end
+
+  def add_observer(observer)
+    @observers << observer
+  end
+
+  def notify()
+    @observers.each do |observer|
+      observer.set_table_params(get_names(), self.count)
+      observer.set_table_data(get_data())
+    end
   end
 end

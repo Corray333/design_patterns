@@ -1,6 +1,6 @@
-require "./data_list/data_list"
-require "./data_table/data_table"
-require "./entities/student_short"
+require_relative "./data_list"
+require_relative "../data_table/data_table"
+require_relative "../entities/student_short"
 
 class DataListStudentShort < DataList
 

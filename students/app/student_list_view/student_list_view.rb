@@ -20,6 +20,7 @@ class StudentListView < FXMainWindow
 
     button_frame = FXVerticalFrame.new(main_frame, FRAME_SUNKEN | LAYOUT_FILL_Y | LAYOUT_FIX_WIDTH, width: 150)
     
+    draw_buttons(button_frame)
 
 
   end
@@ -60,6 +61,36 @@ class StudentListView < FXMainWindow
     @table.setColumnWidth(3, 200)
   end
 
+  private def draw_buttons(button_frame)
+    FXLabel.new(button_frame, "Действия")
+  
+    FXButton.new(button_frame, "Добавить", opts: BUTTON_NORMAL | LAYOUT_FILL_X)
+  
+    @edit_button = FXButton.new(button_frame, "Изменить", opts: BUTTON_NORMAL | LAYOUT_FILL_X)
+    @edit_button.enabled = false 
+  
+    @delete_button = FXButton.new(button_frame, "Удалить", opts: BUTTON_NORMAL | LAYOUT_FILL_X)
+    @delete_button.enabled = false 
+  
+    @update_button = FXButton.new(button_frame, "Обновить", opts: BUTTON_NORMAL | LAYOUT_FILL_X)
+    @table.connect(SEL_CHANGED) do
+      selected_rows = []
+      (@table.selStartRow..@table.selEndRow).each do |row|
+        selected_rows << row if row >= 0 && row < @table.numRows && @table.rowSelected?(row)
+      end
+  
+      if selected_rows.size == 1 
+        @edit_button.enabled = true
+        @delete_button.enabled = true
+      elsif selected_rows.size > 1 
+        @edit_button.enabled = false
+        @delete_button.enabled = true
+      else
+        @edit_button.enabled = false
+        @delete_button.enabled = false
+      end
+    end
+  end
 
 
 end

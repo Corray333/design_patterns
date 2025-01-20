@@ -22,6 +22,7 @@ class StudentListView < FXMainWindow
     
     draw_buttons(button_frame)
 
+    update_table_data()
 
   end
 
@@ -44,11 +45,28 @@ class StudentListView < FXMainWindow
     @page_index = FXLabel.new(navigation_segment, "#{@current_page + 1}", opts: LAYOUT_CENTER_X)
     @next_button = FXButton.new(navigation_segment, ">>>", opts: LAYOUT_RIGHT | BUTTON_NORMAL)
 
+    @prev_button.connect(SEL_COMMAND) {change_page(-1)}
+    @next_button.connect(SEL_COMMAND) {change_page(1)}
 
   end
 
+  private def update_table_data()
+    (0...@items_per_page).each do |row|
+      @table.setItemText(row, 0, "test")
+      @table.setItemText(row, 1, '1')
+      @table.setItemText(row, 2, '2')
+      @table.setItemText(row, 3, '3')
+    end
+  
+    @page_index.setText("#{@current_page + 1} / #{@total_pages}")
+  end
 
-
+  private def change_page(offset)
+    new_page = @current_page + offset
+    return if new_page < 0 || new_page >= @total_pages
+    @current_page = new_page
+    update_table_data()
+  end
 
   def set_table_params(column_names, rows_count)
     column_names.each_with_index do |name, index| 

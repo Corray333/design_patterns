@@ -17,7 +17,8 @@ class StudentList
     return @students.find { |student| student.id == id }
   end
 
-  def get_student_page(page, limit)
+  def get_student_page(page, limit, data_list = nil)
+    print(page, limit, "\n")
     from_index = (page - 1) * limit
     to_index = from_index + limit
     if to_index > @students.length
@@ -30,9 +31,14 @@ class StudentList
     slice = @students[from_index...to_index]
     student_short_slice = slice.map { |student| StudentShort.from_student(student) }
 
-    data_list = DataListStudentShort.new(student_short_slice)
-    data_list.index = from_index
-    data_list.data = student_short_slice
+    if data_list
+      data_list.index = from_index
+      data_list.data = student_short_slice
+    else
+      data_list = DataListStudentShort.new(student_short_slice)
+      data_list.index = from_index
+      data_list.data = student_short_slice
+    end
     return data_list
   end
 

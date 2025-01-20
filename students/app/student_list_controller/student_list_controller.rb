@@ -9,10 +9,11 @@ class StudentListController
       read_data()
       @data_list = DataListStudentShort.new([])
       @data_list.add_observer(@view)
+      refresh_data()
   end
 
   def refresh_data()
-      @data_list = @student_list.get_student_page(@view.items_per_page, @view.current_page + 1)
+      @student_list.get_student_page( @view.current_page + 1, @view.items_per_page, @data_list)
       @data_list.notify()
   end
 

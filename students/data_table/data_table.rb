@@ -18,4 +18,8 @@ class DataTable
 
     return @data[row][col].dup
   end
+
+  def [](index)
+    return @data[index]
+  end 
 end

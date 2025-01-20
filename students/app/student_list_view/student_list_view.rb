@@ -7,7 +7,6 @@ class StudentListView < FXMainWindow
   def initialize(app)
     super(app, "Students",opts: DECOR_ALL & ~DECOR_RESIZE, width: 915, height: 440)
 
-    @controller = StudentListController.new(self)
     @items_per_page = 3
     @current_page = 0
     @total_pages = 3
@@ -27,6 +26,7 @@ class StudentListView < FXMainWindow
     
     draw_buttons(button_frame)
 
+    @controller = StudentListController.new(self)
     update_table_data()
 
   end
@@ -96,15 +96,40 @@ class StudentListView < FXMainWindow
 
   end
 
+  def set_table_params(column_names)
+    column_names.each_with_index do |name, index| 
+        @table.setColumnText(index, name)
+    end
+
+    @table.setColumnWidth(0, 30)
+    @table.setColumnWidth(1, 100)
+    @table.setColumnWidth(2, 200)
+    @table.setColumnWidth(3, 200)
+  end
+
+  def set_table_data(data)
+    @table_data = data
+    update_table_data()
+  end
+
   private def update_table_data()
     (0...@items_per_page).each do |row|
-      @table.setItemText(row, 0, "test")
-      @table.setItemText(row, 1, '1')
-      @table.setItemText(row, 2, '2')
-      @table.setItemText(row, 3, '3')
+      item = @table_data[row]
+      if item
+        @table.setItemText(row, 0, (item[0] + (@current_page * @items_per_page)).to_s)
+        @table.setItemText(row, 1, item[1])
+        @table.setItemText(row, 2, item[2])
+        @table.setItemText(row, 3, item[3])
+      else
+        # Очистка строки, если данных нет
+        @table.setItemText(row, 0, "")
+        @table.setItemText(row, 1, "")
+        @table.setItemText(row, 2, "")
+        @table.setItemText(row, 3, "")
+      end
+         # Обновление метки текущей страницы
+      @page_index.setText("#{@current_page + 1} / #{@total_pages}")
     end
-  
-    @page_index.setText("#{@current_page + 1} / #{@total_pages}")
   end
 
   private def change_page(offset)
@@ -114,7 +139,7 @@ class StudentListView < FXMainWindow
     update_table_data()
   end
 
-  def set_table_params(column_names, rows_count)
+  def set_table_params(column_names)
     column_names.each_with_index do |name, index| 
         @table.setColumnText(index, name)
     end

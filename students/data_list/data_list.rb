@@ -40,6 +40,11 @@ class DataList
     raise NotImplementedError, "Not implemented"
   end
 
+  def set_data(new_data)
+    @data.clear()
+    @data = new_data
+  end
+
   def get_data()
     data = []
 
@@ -60,7 +65,7 @@ class DataList
 
   def notify()
     @observers.each do |observer|
-      observer.set_table_params(get_names(), self.count)
+      observer.set_table_params(get_names())
       observer.set_table_data(get_data())
     end
   end

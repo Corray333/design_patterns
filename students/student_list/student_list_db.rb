@@ -116,6 +116,6 @@ class StudentListDB
   private_class_method :new 
 
   def self.instance
-    @instance ||= new # Создает экземпляр, если он еще не создан
+    @instance ||= new 
   end
 end

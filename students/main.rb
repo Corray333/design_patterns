@@ -15,14 +15,14 @@ d = DataListStudentShort.new([
 puts d.get_data().get_element(1, 0) 
 
 # student_list = StudentList.new("students.json", StudentReaderWriterJson.new())
-student_list = StudentList.new("students.yaml", StudentReaderWriterYAML.new())
+student_list = StudentList.new("./resources/data/students.yaml", StudentReaderWriterYAML.new())
 student_list.sort_by_name()
 p student_list.get_student_by_id(3)
 
 p student_list.get_student_page(2, 2).get_data().get_element(1, 0)
 
 
-p "DB from here: \n"
+p "DB from here:"
 p "===================================================="
 
 db_list = StudentListDB.instance

@@ -18,7 +18,6 @@ class StudentList
   end
 
   def get_student_page(page, limit, data_list = nil)
-    print(page, limit, "\n")
     from_index = (page - 1) * limit
     to_index = from_index + limit
     if to_index > @students.length
@@ -64,6 +63,19 @@ class StudentList
 
   def sort_by_name()
     @students = @students.sort_by { |student| student.fio }
+  end
+
+  def sort(column_index, order)
+    case column_index
+    when 1
+      @students = @students.sort_by { |student| student.fio }
+    when 2
+      @students = @students.sort_by { |student| student.git }
+    when 3
+      @students = @students.sort_by { |student| student.contact }
+    end
+  
+    @students.reverse! if order == :desc
   end
 
   private

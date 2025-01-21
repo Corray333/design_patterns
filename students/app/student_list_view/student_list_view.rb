@@ -7,10 +7,11 @@ class StudentListView < FXMainWindow
   def initialize(app)
     super(app, "Students",opts: DECOR_ALL & ~DECOR_RESIZE, width: 915, height: 440)
 
-    @items_per_page = 3
+    @items_per_page = 10
     @current_page = 0
-    @total_pages = 3
+    @total_pages = 0
     @sort_order = :asc
+    @sort_column = 0
 
     main_frame = FXHorizontalFrame.new(self, LAYOUT_FILL_X | LAYOUT_FILL_Y)
 
@@ -27,6 +28,7 @@ class StudentListView < FXMainWindow
     draw_buttons(button_frame)
 
     @controller = StudentListController.new(self)
+    @total_pages = (@controller.count_elements / @items_per_page).ceil + 1
     update_table_data()
 
   end
@@ -86,10 +88,21 @@ class StudentListView < FXMainWindow
     @table.setColumnWidth(2, 200)
     @table.setColumnWidth(3, 200)
 
+    @table.columnHeader.connect(SEL_COMMAND) do |sender, sel, event|
+      if @sort_column == event.to_i
+        @sort_order = @sort_order == :asc ? :desc : :asc
+      else 
+        @sort_order = :asc
+      end
+      @sort_column = event.to_i
+      @controller.sort_by_column(event.to_i, @sort_order) 
+      @controller.refresh_data 
+    end
+
     navigation_segment = FXHorizontalFrame.new(parent_frame, opts: LAYOUT_CENTER_X | LAYOUT_FIX_WIDTH, width:100)
-    @prev_button = FXButton.new(navigation_segment, "<<<", opts: LAYOUT_LEFT | BUTTON_NORMAL)
+    @prev_button = FXButton.new(navigation_segment, "<", opts: LAYOUT_LEFT | BUTTON_NORMAL)
     @page_index = FXLabel.new(navigation_segment, "#{@current_page + 1}", opts: LAYOUT_CENTER_X)
-    @next_button = FXButton.new(navigation_segment, ">>>", opts: LAYOUT_RIGHT | BUTTON_NORMAL)
+    @next_button = FXButton.new(navigation_segment, ">", opts: LAYOUT_RIGHT | BUTTON_NORMAL)
 
     @prev_button.connect(SEL_COMMAND) {change_page(-1)}
     @next_button.connect(SEL_COMMAND) {change_page(1)}
@@ -136,7 +149,7 @@ class StudentListView < FXMainWindow
     new_page = @current_page + offset
     return if new_page < 0 || new_page >= @total_pages
     @current_page = new_page
-    update_table_data()
+    @controller.refresh_data()
   end
 
   def set_table_params(column_names)
@@ -162,11 +175,18 @@ class StudentListView < FXMainWindow
     @delete_button.enabled = false 
   
     @update_button = FXButton.new(button_frame, "Обновить", opts: BUTTON_NORMAL | LAYOUT_FILL_X)
-    @table.connect(SEL_CHANGED) do
+    @update_button.connect(SEL_COMMAND) do
+      @controller.read_data()
+      @controller.refresh_data()
+    end
+
+    @table.connect(SEL_SELECTED) do
       selected_rows = []
       (@table.selStartRow..@table.selEndRow).each do |row|
         selected_rows << row if row >= 0 && row < @table.numRows && @table.rowSelected?(row)
       end
+
+      print(selected_rows)
   
       if selected_rows.size == 1 
         @edit_button.enabled = true
@@ -180,6 +200,4 @@ class StudentListView < FXMainWindow
       end
     end
   end
-
-
 end

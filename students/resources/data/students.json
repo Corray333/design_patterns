@@ -1,6 +1,6 @@
 [
     {
-        "id":1,
+        "id": 1,
         "surname": "Masenko",
         "name": "Maria",
         "patronymic": "Sergeevna",
@@ -11,7 +11,7 @@
         "birthdate": 631152000
     },
     {
-        "id":3,
+        "id": 3,
         "surname": "Anikin",
         "name": "Mark",
         "patronymic": "Andreevich",
@@ -22,7 +22,7 @@
         "birthdate": 662688000
     },
     {
-        "id":4,
+        "id": 4,
         "surname": "Ivanov",
         "name": "Ivan",
         "patronymic": "Ivanovich",
@@ -33,7 +33,7 @@
         "birthdate": 694224000
     },
     {
-        "id":5,
+        "id": 5,
         "surname": "Petrova",
         "name": "Anna",
         "patronymic": "Petrovna",
@@ -44,7 +44,7 @@
         "birthdate": 725846400
     },
     {
-        "id":6,
+        "id": 6,
         "surname": "Sidorov",
         "name": "Petr",
         "patronymic": "Sidorovich",
@@ -53,5 +53,170 @@
         "email": "petr.sidorov@example.com",
         "git": "https://github.com/petr_sidorov",
         "birthdate": 757382400
+    },
+    {
+        "id": 7,
+        "surname": "Smirnova",
+        "name": "Elena",
+        "patronymic": "Alexeevna",
+        "phone": "89555555555",
+        "tg_username": "elena_smirnova",
+        "email": "elena.smirnova@example.com",
+        "git": "https://github.com/elena_smirnova",
+        "birthdate": 788918400
+    },
+    {
+        "id": 8,
+        "surname": "Kuznetsov",
+        "name": "Sergey",
+        "patronymic": "Nikolaevich",
+        "phone": "89332221100",
+        "tg_username": "sergey_kuznetsov",
+        "email": "sergey.kuznetsov@example.com",
+        "git": "https://github.com/sergey_kuznetsov",
+        "birthdate": 820454400
+    },
+    {
+        "id": 9,
+        "surname": "Vorobyov",
+        "name": "Dmitry",
+        "patronymic": "Fedorovich",
+        "phone": "89651234789",
+        "tg_username": "dmitry_vorobyov",
+        "email": "dmitry.vorobyov@example.com",
+        "git": "https://github.com/dmitry_vorobyov",
+        "birthdate": 851990400
+    },
+    {
+        "id": 10,
+        "surname": "Frolova",
+        "name": "Tatiana",
+        "patronymic": "Yurievna",
+        "phone": "89998887766",
+        "tg_username": "tatiana_frolova",
+        "email": "tatiana.frolova@example.com",
+        "git": "https://github.com/tatiana_frolova",
+        "birthdate": 883526400
+    },
+    {
+        "id": 11,
+        "surname": "Popov",
+        "name": "Alexey",
+        "patronymic": "Ivanovich",
+        "phone": "89876543210",
+        "tg_username": "alexey_popov",
+        "email": "alexey.popov@example.com",
+        "git": "https://github.com/alexey_popov",
+        "birthdate": 915062400
+    },
+    {
+        "id": 12,
+        "surname": "Nikolaeva",
+        "name": "Olga",
+        "patronymic": "Dmitrievna",
+        "phone": "89041234567",
+        "tg_username": "olga_nikolaeva",
+        "email": "olga.nikolaeva@example.com",
+        "git": "https://github.com/olga_nikolaeva",
+        "birthdate": 946598400
+    },
+    {
+        "id": 13,
+        "surname": "Mikhailov",
+        "name": "Victor",
+        "patronymic": "Sergeevich",
+        "phone": "89995554433",
+        "tg_username": "victor_mikhailov",
+        "email": "victor.mikhailov@example.com",
+        "git": "https://github.com/victor_mikhailov",
+        "birthdate": 978134400
+    },
+    {
+        "id": 14,
+        "surname": "Orlova",
+        "name": "Irina",
+        "patronymic": "Petrovna",
+        "phone": "89117778899",
+        "tg_username": "irina_orlova",
+        "email": "irina.orlova@example.com",
+        "git": "https://github.com/irina_orlova",
+        "birthdate": 1000598400
+    },
+    {
+        "id": 15,
+        "surname": "Zaitsev",
+        "name": "Alexander",
+        "patronymic": "Romanovich",
+        "phone": "89812223344",
+        "tg_username": "alexander_zaitsev",
+        "email": "alexander.zaitsev@example.com",
+        "git": "https://github.com/alexander_zaitsev",
+        "birthdate": 1025136000
+    },
+    {
+        "id": 16,
+        "surname": "Morozov",
+        "name": "Vladimir",
+        "patronymic": "Ivanovich",
+        "phone": "89775554433",
+        "tg_username": "vladimir_morozov",
+        "email": "vladimir.morozov@example.com",
+        "git": "https://github.com/vladimir_morozov",
+        "birthdate": 1050960000
+    },
+    {
+        "id": 17,
+        "surname": "Kovaleva",
+        "name": "Natalia",
+        "patronymic": "Alexandrovna",
+        "phone": "89443332211",
+        "tg_username": "natalia_kovaleva",
+        "email": "natalia.kovaleva@example.com",
+        "git": "https://github.com/natalia_kovaleva",
+        "birthdate": 1073952000
+    },
+    {
+        "id": 18,
+        "surname": "Lebedev",
+        "name": "Yuri",
+        "patronymic": "Olegovich",
+        "phone": "89112224455",
+        "tg_username": "yuri_lebedev",
+        "email": "yuri.lebedev@example.com",
+        "git": "https://github.com/yuri_lebedev",
+        "birthdate": 1100380800
+    },
+    {
+        "id": 19,
+        "surname": "Sokolov",
+        "name": "Konstantin",
+        "patronymic": "Fedorovich",
+        "phone": "89551112233",
+        "tg_username": "konstantin_sokolov",
+        "email": "konstantin.sokolov@example.com",
+        "git": "https://github.com/konstantin_sokolov",
+        "birthdate": 1125878400
+    },
+    {
+        "id": 20,
+        "surname": "Stepanova",
+        "name": "Marina",
+        "patronymic": "Igorevna",
+        "phone": "89065554433",
+        "tg_username": "marina_stepanova",
+        "email": "marina.stepanova@example.com",
+        "git": "https://github.com/marina_stepanova",
+        "birthdate": 1152643200
+    },
+    {
+        "id": 21,
+        "surname": "Yakovlev",
+        "name": "Dmitry",
+        "patronymic": "Vladimirovich",
+        "phone": "89221114455",
+        "tg_username": "dmitry_yakovlev",
+        "email": "dmitry.yakovlev@example.com",
+        "git": "https://github.com/dmitry_yakovlev",
+        "birthdate": 1180569600
     }
 ]

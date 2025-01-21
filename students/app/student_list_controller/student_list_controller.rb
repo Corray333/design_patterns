@@ -17,12 +17,12 @@ class StudentListController
       @data_list.notify()
   end
 
-  def get_logs_count()
-      return @student_list.get_student_short_count()
+  def count_elements()
+      return @student_list.count()
   end
 
-  def sort_by_column(column_index)
-      @student_list.sort()
+  def sort_by_column(column_index, order)
+      @student_list.sort(column_index, order)
   end
   
   def read_data()

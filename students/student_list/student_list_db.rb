@@ -111,7 +111,7 @@ class StudentListDB
     result[0]['count'].to_i
   end
 
-  @instance = nil 
+  @instance = nil
 
   private_class_method :new 
 

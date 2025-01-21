@@ -80,13 +80,7 @@ class StudentList
 
   private
   def student_is_new?(student)
-    @students.none? do |s|
-      (student.id && s.id == student.id) ||
-      (student.git && s.git == student.git) ||
-      (student.email && s.email == student.email) ||
-      (student.phone && s.phone == student.phone) ||
-      (student.tg_username && s.tg_username == student.tg_username)
-    end
+    return @students.none? { |s| student == s }
   end
 
 end

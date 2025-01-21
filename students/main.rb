@@ -18,18 +18,19 @@ puts d.get_data().get_element(1, 0)
 student_list = StudentList.new("./resources/data/students.yaml", StudentReaderWriterYAML.new())
 student_list.sort_by_name()
 p student_list.get_student_by_id(3)
+student_list.add_student(student_list.get_student_by_id(3))
 
 p student_list.get_student_page(2, 2).get_data().get_element(1, 0)
 
 
-p "DB from here:"
-p "===================================================="
+# p "DB from here:"
+# p "===================================================="
 
-db_list = StudentListDB.instance
-student_to_be_updated = db_list.get_student_by_id(1)
-p student_to_be_updated
-p db_list.get_student_page(2, 2).get_data().get_element(0, 0)
-student_to_be_updated.birthdate = Time.now.to_i
-db_list.update_student(student_to_be_updated)
-student_to_be_updated = db_list.get_student_by_id(1)
-p student_to_be_updated
+# db_list = StudentListDB.instance
+# student_to_be_updated = db_list.get_student_by_id(1)
+# p student_to_be_updated
+# p db_list.get_student_page(2, 2).get_data().get_element(0, 0)
+# student_to_be_updated.birthdate = Time.now.to_i
+# db_list.update_student(student_to_be_updated)
+# student_to_be_updated = db_list.get_student_by_id(1)
+# p student_to_be_updated

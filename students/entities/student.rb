@@ -4,6 +4,7 @@ require_relative "./student_base"
 class Student < StudentBase 
   include Comparable
   attr_reader :phone, :tg_username, :email, :birthdate, :surname, :name, :patronymic
+  attr_accessor :id
 
   def initialize(surname, name, patronymic, id: nil, phone: nil, tg_username: nil, email: nil, git: nil, birthdate: nil)
     raise ArgumentError, "Invalid or missing surname" unless surname && Student.is_name?(surname)
@@ -87,7 +88,11 @@ class Student < StudentBase
 
   def ==(other)
     if other.is_a? Student
-      @id == other.id
+      return (@id && other.id == @id) ||
+      (@git && other.git == @git) ||
+      (@email && other.email == @email) ||
+      (@phone && other.phone == @phone) ||
+      (@tg_username && other.tg_username == @tg_username)
     else
       false
     end
